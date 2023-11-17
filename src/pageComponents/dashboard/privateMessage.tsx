@@ -138,22 +138,6 @@ const PrivateMessage = () => {
     }
   };
 
-  // const combinedMessages = [];
-  // let indexA = 0;
-  // let indexB = 0;
-
-  // while (indexA < mymessageList.length || indexB < messageList.length) {
-  //   if (indexA < mymessageList.length) {
-  //     console.log(combinedMessages.push(mymessageList[indexA]));
-  //     indexA++;
-  //   }
-  //   if (indexB < messageList.length) {
-  //     console.log(combinedMessages.push(messageList[indexB]));
-  //     indexB++;
-  //   }
-  // }
-
-  // Assuming your array is named 'dataArray'
   const dataArray = messageList.concat(mymessageList);
 
   const combinedMessages = dataArray.slice().sort((a, b) => {
@@ -166,18 +150,6 @@ const PrivateMessage = () => {
       return timestampA - timestampB;
     }
   });
-
-  // Now 'sortedArray' contains the data sorted by the 'createdAt' property
-
-  // Now 'sortedArray' contains the data sorted by the 'createdAt' property
-
-  // Now 'sortedArray' contains the data sorted by the 'createdAt' property
-
-  // Now combinedMessages is a merged array sorted by createdAt and sender
-
-  // Now combinedMessages is a merged and interleaved array based on the createdAt property
-
-  // Now combinedMessages is a merged and interleaved array based on the createdAt property
 
   //method of clearing antd form data
   const [form] = Form.useForm();

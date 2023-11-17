@@ -1,25 +1,28 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CustomAntdButton from "../../antdComponents/CustomAntdButton";
-import Chat from "./Chat";
-import { useRef, useState, useEffect } from "react";
 
 //firebase imports..
-import { auth, db } from "../../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { addDoc, collection, getDocs } from "firebase/firestore";
+import { auth, db } from "../../config/firebase";
 
 //react notifications
-import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //react icons
 import { CiSearch } from "react-icons/ci";
+import { FaPlus } from "react-icons/fa6";
+
+//antd
+import { Form, Input, Modal } from "antd";
 
 const Chatroom = () => {
-  const room_name = useRef(null);
   const [spin_loader, set_spin_loader] = useState(false);
   const [username, set_username] = useState<any>();
   const [chatroomList, setChatroomList] = useState<any>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const chatroomCollectionRef = collection(db, "chatroom");
 
@@ -49,18 +52,28 @@ const Chatroom = () => {
     getChatroomList();
   }, []);
 
-  const createChatRoom = async (e: any) => {
+  const createChatRoom = async (values: any) => {
+    setIsModalOpen(true);
     console.log("Hello");
-    console.log(room_name.current?.value);
 
     try {
-      e.preventDefault();
-      if (room_name.current?.value) {
+      if (values.room_name) {
         await addDoc(chatroomCollectionRef, {
           creator: username,
-          room_name: room_name.current?.value,
+          room_name: values.room_name,
         });
-        alert("Chatroom added successfully");
+        toast.success("🦄Chatroom Created Successfully", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        form.resetFields();
+        setIsModalOpen(false);
       } else {
         toast.error("🦄Something went wrong", {
           position: "top-center",
@@ -78,34 +91,22 @@ const Chatroom = () => {
     }
   };
 
-  return (
-    <div>
-      {/* <form
-        onSubmit={createChatRoom}
-        className="flex flex-col gap-4 items-center justify-center"
-      >
-        <input type="text" placeholder="Enter room name here" ref={room_name} />
-        <CustomAntdButton
-          buttonStyle={{
-            backgroundColor: "var(--primary-color)",
-            color: "white",
-            borderRadius: "9px",
-            padding: "9px 18px",
-            width: "100%",
-            height: "6vh",
-          }}
-          loading={spin_loader}
-          onClick={() => {
-            set_spin_loader(true);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
-            setTimeout(() => {
-              set_spin_loader(false);
-            }, 1000);
-          }}
-        >
-          Create ChatRoom
-        </CustomAntdButton>
-      </form> */}
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  //method of clearing antd form data
+  const [form] = Form.useForm();
+  return (
+    <div className="relative h-full">
       <div className="flex flex-col gap-6">
         <div className="text-[25px] font-semibold">Chatroom</div>
         <div className="flex items-center gap-2 dark:bg-[#36404A] bg-[#E6EBF5] px-4 py-2 dark:text-[#8DB0CF] text-[#1e1e1e]">
@@ -135,6 +136,51 @@ const Chatroom = () => {
           })}
         </div>
       </div>
+      <div className="absolute h-[60px] w-[60px] right-0 hover:cursor-pointer rounded-full drop-shadow-md flex items-center justify-center bottom-0 dark:bg-[#7269EF] dark:text-white bg-[white] text-[#7269EF]">
+        <FaPlus size={30} onClick={showModal} />
+      </div>
+      <Modal
+        title="Create Chatroom"
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={false}
+      >
+        <Form
+          onFinish={createChatRoom}
+          className="  mt-8   flex flex-col gap-2 rounded-[8px] "
+          form={form}
+        >
+          <Form.Item name="room_name">
+            <Input
+              type="text"
+              placeholder="Enter Room Name "
+              className=""
+              size="large"
+            />
+          </Form.Item>
+          <Form.Item>
+            <CustomAntdButton
+              buttonStyle={{
+                backgroundColor: "var(--primary-color)",
+                color: "white",
+                borderRadius: "9px",
+                padding: "9px 18px",
+                width: "100%",
+                height: "6vh",
+              }}
+              loading={spin_loader}
+              onClick={() => {
+                set_spin_loader(true);
+                setTimeout(() => {
+                  set_spin_loader(false);
+                }, 1000);
+              }}
+            >
+              Create
+            </CustomAntdButton>
+          </Form.Item>
+        </Form>
+      </Modal>
       <ToastContainer />
     </div>
   );

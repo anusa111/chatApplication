@@ -49,30 +49,6 @@ const DashboardIndex = () => {
   }, [dark]);
 
   return (
-    // <div>
-    //   <div className="flex items-center justify-center pt-10">
-    //     <div
-    //       style={{
-    //         backgroundColor: "var(--primary-color)",
-    //         color: "white",
-    //       }}
-    //       className="text-3xl px-6 py-2 rounded-md"
-    //     >
-    //       Dashboard
-    //     </div>
-    //   </div>
-    //   <div>{user_email}</div>
-    //   <div>{username}</div>
-    //   <a href="/dashboard/chatroom" className="hover:cursor-pointer">
-    //     Chatroom
-    //   </a>
-    //   <br />
-    //   <a href="/dashboard/users" className="hover:cursor-pointer">
-    //     People you would like to chat
-    //   </a>
-
-    //   <div>{children}</div>
-    // </div>
     <div className=" grid " id="dark">
       <div className="  fixed w-[5%] h-full   flex items-center flex-col">
         <div className=" p-6 h-full flex flex-col justify-between items-center bg-white drop-shadow-md dark:bg-[#36404A]">

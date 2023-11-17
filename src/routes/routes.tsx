@@ -30,6 +30,7 @@ const routes: RouteObject[] = [
     path: "/dashboard",
     element: <Navigate to="chatroom" />,
   },
+
   {
     path: "/dashboard",
     element: <DashboardIndex />,
