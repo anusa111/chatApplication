@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+    --background-color:#f3f2fd;
+    --primary-color:#7269EF;
+    --primary-chat-color-shade-1:#36404A;
+    --primary-chat-color-shade-2:#303841; 
+    --primary-chat-color-shade-3:#262E35;
+}
+body{
+    background-color: var(--background-color);
+    color:#3A4148;
+    font-family: 'Public Sans', sans-serif;
+}
+
+
+
+
+
+
+.layout {
+    @apply lg:max-w-[1280px] lg:max-w-[1280px] mx-auto;
+  }
+  .layout-padding {
+    @apply lg:px-6 px-4;
+  }
+  .component-padding {
+    @apply lg:py-[100px] py-[60px];
+  }
+ 
+
