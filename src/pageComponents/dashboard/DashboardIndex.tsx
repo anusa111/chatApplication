@@ -57,7 +57,7 @@ const DashboardIndex = () => {
           </div>
           <div className="flex flex-col gap-8 items-center justify-center">
             <Tooltip title="Profile" placement="rightBottom">
-              <a href="/dashboard">
+              <a href="/dashboard/profile">
                 <CiUser className="text-[#A6B0CF] font-bold p-4 dark:hover:bg-[#3E4A56] hover:bg-[#F7F7FF] hover:text-[#7269EF] hover:rounded-[8px]  h-[60px] w-[60px]" />
               </a>
             </Tooltip>

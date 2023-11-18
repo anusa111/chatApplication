@@ -25,15 +25,37 @@ import { toast } from "react-toastify";
 const Message = () => {
   const [spin_loader, set_spin_loader] = useState(false);
 
-  const msgCollectionRef = collection(db, "message");
+  const msgCollectionRef = collection(db, "chatroomMessage");
 
   const userCollectionRef = collection(db, "users");
 
-  const { room_name } = useParams();
+  const { room_name, room_id } = useParams();
 
   const [messageList, setMessageList] = useState<any>([]);
 
   const [userList, setUserList] = useState<any>([]);
+
+  const [chatroomList, setChatroomList] = useState<any>([]);
+
+  const chatroomCollectionRef = collection(db, "chatroom");
+
+  useEffect(() => {
+    const getChatroomList = async () => {
+      try {
+        const chatroomData = await getDocs(chatroomCollectionRef);
+        const filteredChatroomData = chatroomData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setChatroomList(filteredChatroomData);
+        console.log(filteredChatroomData);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getChatroomList();
+  }, [room_name]);
 
   useEffect(() => {
     const getUserList = async () => {
@@ -58,7 +80,7 @@ const Message = () => {
   useEffect(() => {
     const queryMessages = query(
       msgCollectionRef,
-      where("chatroom", "==", room_name),
+      where("chatroom_id", "==", room_id),
       orderBy("createdAt")
     );
     const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
@@ -74,7 +96,7 @@ const Message = () => {
       setMessageList(messageCollection);
     });
     return () => unsubscribe();
-  }, []);
+  }, [room_id]);
 
   const createMessage = async (values: any) => {
     console.log(values);
@@ -85,6 +107,7 @@ const Message = () => {
         await addDoc(msgCollectionRef, {
           message: values.message,
           chatroom: room_name,
+          chatroom_id: room_id,
           createdAt: serverTimestamp(),
           user: auth.currentUser?.displayName,
         });
@@ -112,8 +135,32 @@ const Message = () => {
 
   return (
     <div className=" relative ">
-      <div className="fixed top-0 border-b-[1px] z-50 dark:border-[#2E373F] py-6 w-full dark:bg-[#262E35] bg-white text-black  dark:text-white flex items-center   px-6">
-        {room_name}
+      <div className="fixed top-0   border-b-[1px] z-40 dark:border-[#2E373F] py-6 w-full dark:bg-[#262E35] bg-white text-black  dark:text-white      px-6">
+        <div className="flex items-center  relative">
+          <div>{room_name}</div>
+          <div className="absolute top-0 right-[30%]">
+            {chatroomList.map((data, index) => {
+              return (
+                <div key={index}>
+                  <div>
+                    {data.room_name === room_name && (
+                      <div className="flex items-center gap-2">
+                        <div className="text-[15px] font-semibold">
+                          Admin :{"   "}{" "}
+                        </div>
+                        <div>
+                          {" "}
+                          {data.creator.charAt(0).toUpperCase() +
+                            data.creator.slice(1)}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
       <div className="my-[4rem] px-20 py-10 h-[100vh]">
         {messageList.map((data: any, index: any) => {
@@ -138,6 +185,20 @@ const Message = () => {
                           }}
                           className="  h-[40px] w-[40px] object-cover  rounded-full"
                         />
+                        {chatroomList.map((data, index) => {
+                          if (
+                            data.creator === userlist.username &&
+                            data.room_name === room_name
+                          ) {
+                            return (
+                              <div key={index}>
+                                <div className="text-[#8992B4] text-[12px]">
+                                  Admin
+                                </div>
+                              </div>
+                            );
+                          }
+                        })}
                       </div>
                     );
                   } else {

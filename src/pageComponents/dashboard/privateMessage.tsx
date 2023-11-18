@@ -315,7 +315,7 @@ const PrivateMessage = () => {
           </div>
         </Form>
       </div>
-      <ToastContainer />
+      <ToastContainer className="z-50" />
     </div>
   );
 };

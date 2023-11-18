@@ -37,25 +37,26 @@ const Chatroom = () => {
   }, []);
 
   useEffect(() => {
-    const getChatroomList = async () => {
-      try {
-        const data = await getDocs(chatroomCollectionRef);
-        const filteredData = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setChatroomList(filteredData);
-      } catch (e) {
-        console.log(e);
-      }
-    };
     getChatroomList();
   }, []);
+
+  const getChatroomList = async () => {
+    try {
+      const data = await getDocs(chatroomCollectionRef);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setChatroomList(filteredData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const createChatRoom = async (values: any) => {
     setIsModalOpen(true);
     console.log("Hello");
-
+    getChatroomList();
     try {
       if (values.room_name) {
         await addDoc(chatroomCollectionRef, {
@@ -127,7 +128,7 @@ const Chatroom = () => {
                   to={`/dashboard/chatroom/${data.room_name.replace(
                     /\s+/g,
                     ""
-                  )}`}
+                  )}/${data.id}`}
                 >
                   {data.room_name}
                 </Link>
@@ -136,8 +137,11 @@ const Chatroom = () => {
           })}
         </div>
       </div>
-      <div className="absolute h-[60px] w-[60px] right-0 hover:cursor-pointer rounded-full drop-shadow-md flex items-center justify-center bottom-0 dark:bg-[#7269EF] dark:text-white bg-[white] text-[#7269EF]">
-        <FaPlus size={30} onClick={showModal} />
+      <div
+        onClick={showModal}
+        className="absolute left-[10%] px-6 py-2 right-[10%] hover:cursor-pointer rounded-md drop-shadow-md flex items-center justify-center bottom-0 dark:bg-[#7269EF] dark:text-white bg-[white] text-[#7269EF]"
+      >
+        Create Chatroom
       </div>
       <Modal
         title="Create Chatroom"
@@ -181,7 +185,7 @@ const Chatroom = () => {
           </Form.Item>
         </Form>
       </Modal>
-      <ToastContainer />
+      <ToastContainer className="z-50" />
     </div>
   );
 };

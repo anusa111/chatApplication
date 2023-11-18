@@ -9,6 +9,7 @@ import Login from "../pageComponents/authentication/login";
 import PrivateMessageLayout from "../pageComponents/dashboard/PrivateMessageLayout";
 import PrivateMessage from "../pageComponents/dashboard/privateMessage";
 import Signup from "../pageComponents/authentication/signup";
+import ProfileLayout from "../pageComponents/dashboard/ProfileLayout";
 const routes: RouteObject[] = [
   {
     path: "/",
@@ -40,7 +41,7 @@ const routes: RouteObject[] = [
         element: <ChatroomLayout />,
         children: [
           {
-            path: ":room_name",
+            path: ":room_name/:room_id",
             element: <Chatroom_Message />,
           },
         ],
@@ -54,6 +55,10 @@ const routes: RouteObject[] = [
             element: <PrivateMessage />,
           },
         ],
+      },
+      {
+        path: "profile",
+        element: <ProfileLayout />,
       },
     ],
   },

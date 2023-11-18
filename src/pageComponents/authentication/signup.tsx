@@ -69,16 +69,19 @@ const Signup = () => {
         values.email,
         values.password
       );
-      toast.success("Registered Successfully", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+
+      if (user_info) {
+        toast.success("Registered Successfully", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
 
       form.resetFields();
 
@@ -90,6 +93,7 @@ const Signup = () => {
       });
 
       localStorage.setItem("auth-token", user_info.user.refreshToken);
+
       await addDoc(userCollectionRef, {
         email: values.email,
         username: values.username,
@@ -120,7 +124,7 @@ const Signup = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-center h-screen gap-6 lg:pt-[180px] pt-36 component-padding">
+      <div className="flex flex-col items-center justify-center h-full gap-6 lg:pt-[180px] pt-36 component-padding">
         <div className="flex flex-col gap-6">
           <div className="text-[20px] lg:text-3xl font-semibold text-center">
             Sign Up
@@ -173,7 +177,7 @@ const Signup = () => {
           </Form>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer className="z-50" />
     </Layout>
   );
 };

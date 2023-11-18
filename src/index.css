@@ -31,3 +31,17 @@ body{
   }
  
 
+  .ant-collapse>.ant-collapse-item >.ant-collapse-header{
+   @apply dark:text-[white] text-[black]
+   
+  }
+
+  .ant-collapse .ant-collapse-content>.ant-collapse-content-box {
+    
+@apply  dark:bg-[#262E35] dark:text-[white] rounded-b-[8px]
+    
+  }
+
+  .ant-collapse-item{
+    border-color: green;
+  }
