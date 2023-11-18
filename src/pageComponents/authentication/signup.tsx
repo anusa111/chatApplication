@@ -99,6 +99,7 @@ const Signup = () => {
         username: values.username,
         createdAt: serverTimestamp(),
         profile: values.profile,
+        user_id: auth.currentUser?.uid,
       });
 
       window.location.href = "/dashboard";

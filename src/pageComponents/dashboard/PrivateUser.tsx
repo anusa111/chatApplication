@@ -49,7 +49,10 @@ const PrivateUser = () => {
           return (
             <div key={index}>
               <Link
-                to={`/dashboard/startchat/${data.username.replace(/\s+/g, "")}`}
+                to={`/dashboard/startchat/${data.username.replace(
+                  /\s+/g,
+                  ""
+                )}/${data.user_id}`}
               >
                 {data.username}
               </Link>

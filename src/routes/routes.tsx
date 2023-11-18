@@ -51,7 +51,7 @@ const routes: RouteObject[] = [
         element: <PrivateMessageLayout />,
         children: [
           {
-            path: ":user_name",
+            path: ":user_name/:user_id",
             element: <PrivateMessage />,
           },
         ],

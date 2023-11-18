@@ -18,7 +18,7 @@ import { IoSend } from "react-icons/io5";
 import { ToastContainer, toast } from "react-toastify";
 
 const PrivateMessage = () => {
-  const { user_name } = useParams();
+  const { user_name, user_id } = useParams();
   const [spin_loader, set_spin_loader] = useState(false);
 
   const userCollectionRef = collection(db, "users");
@@ -67,8 +67,8 @@ const PrivateMessage = () => {
     if (auth.currentUser?.displayName) {
       const queryMessages = query(
         privateMsgCollectionRef,
-        where("destination", "==", user_name),
-        where("source", "==", auth.currentUser?.displayName),
+        where("destination", "==", user_id),
+        where("source", "==", auth.currentUser?.uid),
         orderBy("createdAt")
       );
       onSnapshot(queryMessages, (snapshot) => {
@@ -85,18 +85,19 @@ const PrivateMessage = () => {
         setMessageList(messageCollection);
       });
     }
-  }, [user_name, auth.currentUser?.displayName]);
+  }, [user_id, auth.currentUser?.uid]);
 
   useEffect(() => {
-    if (auth.currentUser?.displayName) {
+    if (auth.currentUser?.uid) {
       const queryMessages = query(
         privateMsgCollectionRef,
-        where("source", "==", user_name),
-        where("destination", "==", auth.currentUser?.displayName),
+        where("source", "==", user_id),
+        where("destination", "==", auth.currentUser?.uid),
         orderBy("createdAt")
       );
       onSnapshot(queryMessages, (snapshot) => {
         console.log("New Messages");
+        console.log(queryMessages);
         const messageCollection = [];
         snapshot.forEach((doc) => {
           console.log(doc.data());
@@ -109,16 +110,18 @@ const PrivateMessage = () => {
         setMyMessageList(messageCollection);
       });
     }
-  }, [user_name, auth.currentUser?.displayName]);
+  }, [user_id, auth.currentUser?.uid]);
 
   const createMessage = async (values: any) => {
     try {
       if (values.message) {
         await addDoc(privateMsgCollectionRef, {
           message: values.message,
-          destination: user_name,
+
+          destination: user_id,
+
           createdAt: serverTimestamp(),
-          source: auth.currentUser?.displayName,
+          source: auth.currentUser?.uid,
         });
         form.resetFields();
       } else {
@@ -236,13 +239,13 @@ const PrivateMessage = () => {
             <div key={index} className=" relative">
               <div
                 className={`${
-                  data.source === auth.currentUser?.displayName
+                  data.source === auth.currentUser?.uid
                     ? "right-[-45px] top-12"
                     : "left-[-45px] top-12"
                 } absolute`}
               >
                 {userList.map((userlist: any, index: any) => {
-                  if (data.source == userlist.username) {
+                  if (data.source == userlist.user_id) {
                     return (
                       <div key={index}>
                         <img
@@ -263,7 +266,7 @@ const PrivateMessage = () => {
               <div className="py-10">
                 <div
                   className={`${
-                    data.source === auth.currentUser?.displayName
+                    data.source === auth.currentUser?.uid
                       ? "bg-[#7269EF]   right-0  text-white  rounded-tr-[6px] rounded-br-[24px] rounded-tl-[20px] rounded-bl-[20px] drop-shadow-xl"
                       : "dark:bg-[#36404A] bg-[#D2DBEC] left-0 dark:text-white text-[#1e1e1e] rounded-tl-[6px] rounded-bl-[24px] rounded-tr-[20px] rounded-br-[20px] drop-shadow-md"
                   } w-fit flex   px-6 py-2 rounded-[8px] absolute`}

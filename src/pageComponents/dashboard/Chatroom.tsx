@@ -4,7 +4,13 @@ import CustomAntdButton from "../../antdComponents/CustomAntdButton";
 
 //firebase imports..
 import { onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  DocumentReference,
+  addDoc,
+  collection,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { auth, db } from "../../config/firebase";
 
 //react notifications
@@ -59,9 +65,13 @@ const Chatroom = () => {
     getChatroomList();
     try {
       if (values.room_name) {
-        await addDoc(chatroomCollectionRef, {
+        const docRef = await addDoc(chatroomCollectionRef, {
           creator: username,
           room_name: values.room_name,
+          creator_id: auth.currentUser?.uid,
+        });
+        await updateDoc(docRef, {
+          room_id: docRef.id,
         });
         toast.success("🦄Chatroom Created Successfully", {
           position: "top-center",

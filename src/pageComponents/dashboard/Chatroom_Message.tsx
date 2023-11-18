@@ -110,6 +110,7 @@ const Message = () => {
           chatroom_id: room_id,
           createdAt: serverTimestamp(),
           user: auth.currentUser?.displayName,
+          user_id: auth.currentUser?.uid,
         });
 
         form.resetFields();
@@ -143,7 +144,7 @@ const Message = () => {
               return (
                 <div key={index}>
                   <div>
-                    {data.room_name === room_name && (
+                    {data.room_id === room_id && (
                       <div className="flex items-center gap-2">
                         <div className="text-[15px] font-semibold">
                           Admin :{"   "}{" "}
@@ -168,13 +169,13 @@ const Message = () => {
             <div key={index} className=" relative">
               <div
                 className={`${
-                  data.user === auth.currentUser?.displayName
+                  data.user_id === auth.currentUser?.uid
                     ? "right-[-45px] top-12"
                     : "left-[-45px] top-12"
                 } absolute`}
               >
                 {userList.map((userlist: any, index: any) => {
-                  if (data.user == userlist.username) {
+                  if (data.user_id == userlist.user_id) {
                     return (
                       <div key={index}>
                         <img
@@ -187,8 +188,8 @@ const Message = () => {
                         />
                         {chatroomList.map((data, index) => {
                           if (
-                            data.creator === userlist.username &&
-                            data.room_name === room_name
+                            data.creator_id === userlist.user_id &&
+                            data.room_id === room_id
                           ) {
                             return (
                               <div key={index}>
@@ -209,7 +210,7 @@ const Message = () => {
               <div className="py-10">
                 <div
                   className={`${
-                    data.user === auth.currentUser?.displayName
+                    data.user_id === auth.currentUser?.uid
                       ? "bg-[#7269EF]  right-0 text-white rounded-tr-[6px] rounded-br-[24px] rounded-tl-[20px] rounded-bl-[20px] drop-shadow-xl"
                       : "dark:bg-[#36404A] bg-[#D2DBEC] left-0 dark:text-white text-[#1e1e1e] rounded-tl-[6px] rounded-bl-[24px] rounded-tr-[20px] rounded-br-[20px] drop-shadow-md"
                   } w-fit   px-6 py-2 absolute`}
