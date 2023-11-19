@@ -20,7 +20,7 @@ import { IoMoonOutline } from "react-icons/io5";
 //antd imports
 import { Tooltip } from "antd";
 import { Outlet } from "react-router-dom";
-import Chatroom from "./Chatroom";
+import Chatroom from "./chatroom/Chatroom";
 
 const DashboardIndex = () => {
   const [user_email, set_user_email] = useState<any>();

@@ -9,10 +9,10 @@ import Signup from "./pageComponents/authentication/signup.tsx";
 import Login from "./pageComponents/authentication/login.tsx";
 import Chat from "./pageComponents/dashboard/Chat.tsx";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
-import Chatroom from "./pageComponents/dashboard/Chatroom.tsx";
+import Chatroom from "./pageComponents/dashboard/chatroom/Chatroom.tsx";
 import Message from "./pageComponents/dashboard/message.tsx";
-import PrivateUser from "./pageComponents/dashboard/PrivateUser.tsx";
-import PrivateMessage from "./pageComponents/dashboard/privateMessage.tsx";
+import PrivateUser from "./pageComponents/dashboard/privateMessage/PrivateUser.tsx";
+import PrivateMessage from "./pageComponents/dashboard/privateMessage/privateMessage.tsx";
 
 import { ThemeProvider } from "./config/ThemeContext.tsx";
 

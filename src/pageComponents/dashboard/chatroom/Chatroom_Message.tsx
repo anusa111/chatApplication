@@ -10,8 +10,8 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import CustomAntdButton from "../../antdComponents/CustomAntdButton";
-import { auth, db } from "../../config/firebase";
+import CustomAntdButton from "../../../antdComponents/CustomAntdButton";
+import { auth, db } from "../../../config/firebase";
 
 //react icons
 import { IoSend } from "react-icons/io5";
@@ -23,13 +23,9 @@ import { Form, Input } from "antd";
 import { toast } from "react-toastify";
 
 const Message = () => {
-  const [spin_loader, set_spin_loader] = useState(false);
-
-  const msgCollectionRef = collection(db, "chatroomMessage");
-
-  const userCollectionRef = collection(db, "users");
-
   const { room_name, room_id } = useParams();
+
+  const [spin_loader, set_spin_loader] = useState(false);
 
   const [messageList, setMessageList] = useState<any>([]);
 
@@ -37,7 +33,18 @@ const Message = () => {
 
   const [chatroomList, setChatroomList] = useState<any>([]);
 
+  const [chatroomMember, setChatroomMember] = useState<any>();
+
+  //firebase/database
+  const msgCollectionRef = collection(db, "chatroomMessage");
+
+  const userCollectionRef = collection(db, "users");
+
   const chatroomCollectionRef = collection(db, "chatroom");
+
+  const chatroomMemberRef = collection(db, "chatroomMember");
+
+  //get chatroomlist
 
   useEffect(() => {
     const getChatroomList = async () => {
@@ -56,6 +63,8 @@ const Message = () => {
 
     getChatroomList();
   }, [room_name]);
+
+  //get userlist
 
   useEffect(() => {
     const getUserList = async () => {
@@ -76,6 +85,29 @@ const Message = () => {
 
     getUserList();
   }, []);
+
+  //get chatroom memmber
+
+  useEffect(() => {
+    getChatroomMember();
+  }, []);
+
+  const getChatroomMember = async () => {
+    try {
+      const data = await getDocs(chatroomMemberRef);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      setChatroomMember(filteredData);
+      console.log(chatroomMember);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //getting room messages
 
   useEffect(() => {
     const queryMessages = query(
@@ -98,6 +130,8 @@ const Message = () => {
     return () => unsubscribe();
   }, [room_id]);
 
+  //creating chatroom message
+
   const createMessage = async (values: any) => {
     console.log(values);
     try {
@@ -114,6 +148,13 @@ const Message = () => {
         });
 
         form.resetFields();
+
+        await addDoc(chatroomMemberRef, {
+          chatroom_id: room_id,
+          chatroom_name: room_name,
+          member_id: auth.currentUser?.uid,
+          member_name: auth.currentUser?.displayName,
+        });
       } else {
         toast.error("Please provide your message", {
           position: "top-center",
@@ -139,6 +180,7 @@ const Message = () => {
       <div className="fixed top-0   border-b-[1px] z-40 dark:border-[#2E373F] py-6 w-full dark:bg-[#262E35] bg-white text-black  dark:text-white      px-6">
         <div className="flex items-center  relative">
           <div>{room_name}</div>
+
           <div className="absolute top-0 right-[30%]">
             {chatroomList.map((data, index) => {
               return (
@@ -163,6 +205,7 @@ const Message = () => {
           </div>
         </div>
       </div>
+
       <div className="my-[4rem] px-20 py-10 h-[100vh]">
         {messageList.map((data: any, index: any) => {
           return (

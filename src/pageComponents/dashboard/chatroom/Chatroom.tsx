@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CustomAntdButton from "../../antdComponents/CustomAntdButton";
+import CustomAntdButton from "../../../antdComponents/CustomAntdButton";
 
 //firebase imports..
 import { onAuthStateChanged } from "firebase/auth";
@@ -11,7 +11,7 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { auth, db } from "../../config/firebase";
+import { auth, db } from "../../../config/firebase";
 
 //react notifications
 import { ToastContainer, toast } from "react-toastify";
@@ -29,7 +29,6 @@ const Chatroom = () => {
   const [username, set_username] = useState<any>();
   const [chatroomList, setChatroomList] = useState<any>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const chatroomCollectionRef = collection(db, "chatroom");
 
   useEffect(() => {
@@ -41,6 +40,8 @@ const Chatroom = () => {
       }
     });
   }, []);
+
+  //getting chatroom list
 
   useEffect(() => {
     getChatroomList();
@@ -58,6 +59,8 @@ const Chatroom = () => {
       console.log(e);
     }
   };
+
+  //creating chatroom
 
   const createChatRoom = async (values: any) => {
     setIsModalOpen(true);
@@ -104,10 +107,6 @@ const Chatroom = () => {
 
   const showModal = () => {
     setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
   };
 
   const handleCancel = () => {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useUserInfo from "../../hooks/useUserInfo";
-import { auth } from "../../config/firebase";
+import { auth } from "../../../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 //react icons

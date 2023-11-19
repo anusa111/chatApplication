@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Form, Input } from "antd";
+import { onAuthStateChanged } from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -10,12 +10,12 @@ import {
   serverTimestamp,
   where,
 } from "firebase/firestore";
-import { auth, db } from "../../config/firebase";
-import CustomAntdButton from "../../antdComponents/CustomAntdButton";
-import { onAuthStateChanged } from "firebase/auth";
-import { Form, Input } from "antd";
+import { useEffect, useState } from "react";
 import { IoSend } from "react-icons/io5";
+import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import CustomAntdButton from "../../../antdComponents/CustomAntdButton";
+import { auth, db } from "../../../config/firebase";
 
 const PrivateMessage = () => {
   const { user_name, user_id } = useParams();

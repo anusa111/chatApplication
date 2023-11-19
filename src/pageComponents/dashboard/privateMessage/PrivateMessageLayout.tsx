@@ -1,5 +1,3 @@
-import React from "react";
-import Chatroom from "./Chatroom";
 import { Outlet } from "react-router-dom";
 import PrivateUser from "./PrivateUser";
 

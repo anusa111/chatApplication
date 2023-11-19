@@ -1,7 +1,7 @@
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, db } from "../../config/firebase";
+import { auth, db } from "../../../config/firebase";
 import { CiSearch } from "react-icons/ci";
 
 const PrivateUser = () => {
@@ -45,7 +45,7 @@ const PrivateUser = () => {
         />
       </div>
       <div className="flex flex-col gap-4">
-        {userList.map((data, index) => {
+        {userList.map((data: any, index: any) => {
           return (
             <div key={index}>
               <Link
