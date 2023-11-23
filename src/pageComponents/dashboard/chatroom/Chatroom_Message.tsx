@@ -15,12 +15,16 @@ import { auth, db } from "../../../config/firebase";
 
 //react icons
 import { IoSend } from "react-icons/io5";
+import { FaPhoneAlt } from "react-icons/fa";
 
 //antd imports
 import { Form, Input } from "antd";
 
 //react notifications
 import { toast } from "react-toastify";
+
+//group videocall
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 const Message = () => {
   const { room_name, room_id } = useParams();
@@ -34,6 +38,8 @@ const Message = () => {
   const [chatroomList, setChatroomList] = useState<any>([]);
 
   const [chatroomMember, setChatroomMember] = useState<any>();
+
+  const [start_call, set_start_call] = useState<any>(false);
 
   //firebase/database
   const msgCollectionRef = collection(db, "chatroomMessage");
@@ -172,6 +178,28 @@ const Message = () => {
     }
   };
 
+  //video calls
+  const myMetting = async (element) => {
+    console.log(room_name);
+    const appID = 751325053;
+    const serverSecret = "f0d7ebdc764a40ebbe5d10e2c54df90e";
+    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+      appID,
+      serverSecret,
+      room_id?.toString(),
+      Date.now().toString(),
+      auth.currentUser?.displayName
+    );
+    const zegocloud = ZegoUIKitPrebuilt.create(kitToken);
+    zegocloud.joinRoom({
+      container: element,
+      scenario: {
+        mode: ZegoUIKitPrebuilt.GroupCalls,
+      },
+      showScreenSharingButton: true,
+    });
+  };
+
   //method of clearing antd form data
   const [form] = Form.useForm();
 
@@ -195,6 +223,19 @@ const Message = () => {
                           {" "}
                           {data.creator.charAt(0).toUpperCase() +
                             data.creator.slice(1)}
+                        </div>
+                        <div
+                          onClick={() => {
+                            set_start_call(!start_call);
+                          }}
+                        >
+                          <FaPhoneAlt
+                            style={{
+                              color: "var(--primary-color)",
+                            }}
+                            size={20}
+                            className="hover:cursor-pointer"
+                          />
                         </div>
                       </div>
                     )}
@@ -265,6 +306,7 @@ const Message = () => {
           );
         })}
       </div>
+      {start_call && <div ref={myMetting} />}
 
       <div className="fixed bottom-0  border-t-[1px] z-50 dark:border-[#2E373F]  flex items-center   w-full dark:bg-[#262E35] py-2 px-6 dark:text-white bg-white text-[#1e1e1e]">
         <Form

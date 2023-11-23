@@ -3,12 +3,15 @@ import { AiOutlineMail, AiOutlineUser } from "react-icons/ai";
 import { CiImageOff } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CustomAntdButton from "../../antdComponents/CustomAntdButton";
 import Layout from "../global/Layout";
 
 //antd imports
 import { Form } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import type { UploadProps } from "antd";
+import { Button, message, Upload } from "antd";
 
 //styled Components
 import { StyledInput } from "../../styledComponents/styledInput";
@@ -18,6 +21,17 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../../config/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
+//firebase storage imports
+import { image_db } from "../../config/firebase";
+import {
+  getDownloadURL,
+  list,
+  listAll,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { v4 } from "uuid";
+
 //react notifications
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -25,6 +39,8 @@ import { ToastContainer, toast } from "react-toastify";
 const Signup = () => {
   //react states...
   const [spin_loader, set_spin_loader] = useState(false);
+  const [img, setImg] = useState<any>();
+  const [imgUrl, setImgUrl] = useState<any>([]);
 
   //method of clearing antd form data
   const [form] = Form.useForm();
@@ -54,13 +70,6 @@ const Signup = () => {
       icons: <RiLockPasswordLine />,
       ref: "password",
     },
-    {
-      label: "Your Avatar",
-      type: "text",
-      placeholder: "Your Avatar",
-      icons: <CiImageOff />,
-      ref: "profile",
-    },
   ];
   const signUp = async (values: any) => {
     try {
@@ -89,7 +98,7 @@ const Signup = () => {
 
       await updateProfile(user, {
         displayName: values.username,
-        photoURL: values.profile,
+        photoURL: imgUrl,
       });
 
       localStorage.setItem("auth-token", user_info.user.refreshToken);
@@ -98,7 +107,7 @@ const Signup = () => {
         email: values.email,
         username: values.username,
         createdAt: serverTimestamp(),
-        profile: values.profile,
+        profile: imgUrl,
         user_id: auth.currentUser?.uid,
       });
 
@@ -121,6 +130,24 @@ const Signup = () => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+
+  //image upload
+
+  const handleImageUpload = () => {
+    if (img) {
+      console.log(img);
+      alert("Upload successfull");
+
+      const imgRef = ref(image_db, `uploads/${v4()}`);
+      uploadBytes(imgRef, img).then((value) => {
+        console.log(value);
+        getDownloadURL(value.ref).then((url) => {
+          console.log(url);
+          setImgUrl(url);
+        });
+      });
+    }
   };
 
   return (
@@ -154,6 +181,18 @@ const Signup = () => {
                 );
               })}
             </div>
+            <Upload
+              showUploadList={false} // Hide the default Ant Design upload list
+              onChange={handleImageUpload}
+              beforeUpload={(file, fileList) => {
+                console.log(file);
+                setImg(file);
+
+                return false;
+              }}
+            >
+              <Button icon={<UploadOutlined />}>Select Image</Button>
+            </Upload>
             <Form.Item>
               <CustomAntdButton
                 buttonStyle={{
@@ -176,6 +215,15 @@ const Signup = () => {
               </CustomAntdButton>
             </Form.Item>
           </Form>
+          {/* <div>
+            <input
+              type="file"
+              onChange={(e) => {
+                setImg(e.target?.files[0]);
+              }}
+            />
+            <button onClick={handleImageUpload}>Upload</button>
+          </div> */}
         </div>
       </div>
       <ToastContainer className="z-50" />
