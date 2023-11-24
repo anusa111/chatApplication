@@ -24,7 +24,7 @@ import { Form, Input } from "antd";
 import { toast } from "react-toastify";
 
 //group videocall
-import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+// import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 const Message = () => {
   const { room_name, room_id } = useParams();
@@ -122,7 +122,7 @@ const Message = () => {
       orderBy("createdAt")
     );
     const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
-      const messageCollection = [];
+      const messageCollection: any = [];
       snapshot.forEach((doc) => {
         console.log(doc.data());
         messageCollection.push({
@@ -130,7 +130,6 @@ const Message = () => {
           id: doc.id,
         });
       });
-      console.log(messageCollection);
       setMessageList(messageCollection);
     });
     return () => unsubscribe();
@@ -179,26 +178,26 @@ const Message = () => {
   };
 
   //video calls
-  const myMetting = async (element) => {
-    console.log(room_name);
-    const appID = 751325053;
-    const serverSecret = "f0d7ebdc764a40ebbe5d10e2c54df90e";
-    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
-      appID,
-      serverSecret,
-      room_id?.toString(),
-      Date.now().toString(),
-      auth.currentUser?.displayName
-    );
-    const zegocloud = ZegoUIKitPrebuilt.create(kitToken);
-    zegocloud.joinRoom({
-      container: element,
-      scenario: {
-        mode: ZegoUIKitPrebuilt.GroupCalls,
-      },
-      showScreenSharingButton: true,
-    });
-  };
+  // const myMetting = async (element) => {
+  //   console.log(room_name);
+  //   const appID = 751325053;
+  //   const serverSecret = "f0d7ebdc764a40ebbe5d10e2c54df90e";
+  //   const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+  //     appID,
+  //     serverSecret,
+  //     room_id?.toString(),
+  //     Date.now().toString(),
+  //     auth.currentUser?.displayName
+  //   );
+  //   const zegocloud = ZegoUIKitPrebuilt.create(kitToken);
+  //   zegocloud.joinRoom({
+  //     container: element,
+  //     scenario: {
+  //       mode: ZegoUIKitPrebuilt.GroupCalls,
+  //     },
+  //     showScreenSharingButton: true,
+  //   });
+  // };
 
   //method of clearing antd form data
   const [form] = Form.useForm();
@@ -210,7 +209,7 @@ const Message = () => {
           <div>{room_name}</div>
 
           <div className="absolute top-0 right-[30%]">
-            {chatroomList.map((data, index) => {
+            {chatroomList.map((data: any, index: any) => {
               return (
                 <div key={index}>
                   <div>
@@ -270,7 +269,7 @@ const Message = () => {
                           }}
                           className="  h-[40px] w-[40px] object-cover  rounded-full"
                         />
-                        {chatroomList.map((data, index) => {
+                        {chatroomList.map((data: any, index: any) => {
                           if (
                             data.creator_id === userlist.user_id &&
                             data.room_id === room_id
@@ -306,7 +305,7 @@ const Message = () => {
           );
         })}
       </div>
-      {start_call && <div ref={myMetting} />}
+      {/* {start_call && <div ref={myMetting} />} */}
 
       <div className="fixed bottom-0  border-t-[1px] z-50 dark:border-[#2E373F]  flex items-center   w-full dark:bg-[#262E35] py-2 px-6 dark:text-white bg-white text-[#1e1e1e]">
         <Form

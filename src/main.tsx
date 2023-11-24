@@ -1,18 +1,9 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 //Page
-import Signup from "./pageComponents/authentication/signup.tsx";
-import Login from "./pageComponents/authentication/login.tsx";
-import Chat from "./pageComponents/dashboard/Chat.tsx";
-import ProtectedRoute from "./utils/ProtectedRoute.tsx";
-import Chatroom from "./pageComponents/dashboard/chatroom/Chatroom.tsx";
-import Message from "./pageComponents/dashboard/message.tsx";
-import PrivateUser from "./pageComponents/dashboard/privateMessage/PrivateUser.tsx";
-import PrivateMessage from "./pageComponents/dashboard/privateMessage/privateMessage.tsx";
 
 import { ThemeProvider } from "./config/ThemeContext.tsx";
 

@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { createContext, useLayoutEffect, useState } from "react";
 interface IValue {
   dark?: boolean;
   handleTheme: () => void;

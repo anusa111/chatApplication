@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { auth } from "../../../config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { auth } from "../../../config/firebase";
 
 //react icons
-import { LuDot } from "react-icons/lu";
 import { Collapse } from "antd";
+import { LuDot } from "react-icons/lu";
 
 const ProfileInformation = () => {
   const [email, setEmail] = useState<any | null>(null);

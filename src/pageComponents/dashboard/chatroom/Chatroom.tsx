@@ -4,13 +4,7 @@ import CustomAntdButton from "../../../antdComponents/CustomAntdButton";
 
 //firebase imports..
 import { onAuthStateChanged } from "firebase/auth";
-import {
-  DocumentReference,
-  addDoc,
-  collection,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../../config/firebase";
 
 //react notifications
@@ -19,7 +13,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 //react icons
 import { CiSearch } from "react-icons/ci";
-import { FaPlus } from "react-icons/fa6";
 
 //antd
 import { Form, Input, Modal } from "antd";

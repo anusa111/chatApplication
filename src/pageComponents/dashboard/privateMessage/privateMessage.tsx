@@ -73,7 +73,7 @@ const PrivateMessage = () => {
       );
       onSnapshot(queryMessages, (snapshot) => {
         console.log("New Messages");
-        const messageCollection = [];
+        const messageCollection: any = [];
         snapshot.forEach((doc) => {
           console.log(doc.data());
           messageCollection.push({
@@ -98,7 +98,7 @@ const PrivateMessage = () => {
       onSnapshot(queryMessages, (snapshot) => {
         console.log("New Messages");
         console.log(queryMessages);
-        const messageCollection = [];
+        const messageCollection: any = [];
         snapshot.forEach((doc) => {
           console.log(doc.data());
           messageCollection.push({
@@ -143,7 +143,7 @@ const PrivateMessage = () => {
 
   const dataArray = messageList.concat(mymessageList);
 
-  const combinedMessages = dataArray.slice().sort((a, b) => {
+  const combinedMessages = dataArray.slice().sort((a: any, b: any) => {
     if (a.createdAt && b.createdAt) {
       const timestampA =
         a.createdAt?.seconds * 1000 + a.createdAt.nanoseconds / 1e6;

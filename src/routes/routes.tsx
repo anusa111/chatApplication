@@ -1,15 +1,14 @@
-import { RouteObject, Navigate } from "react-router-dom";
-import DashboardIndex from "../pageComponents/dashboard/DashboardIndex";
-import Chatroom from "../pageComponents/dashboard/chatroom/Chatroom";
-import IndexHero from "../pageComponents/heroSection/indexHero";
-import Layout from "../pageComponents/global/Layout";
-import Chatroom_Message from "../pageComponents/dashboard/chatroom/Chatroom_Message";
-import ChatroomLayout from "../pageComponents/dashboard/chatroom/ChatroomLayout";
+import { Navigate, RouteObject } from "react-router-dom";
 import Login from "../pageComponents/authentication/login";
+import Signup from "../pageComponents/authentication/signup";
+import DashboardIndex from "../pageComponents/dashboard/DashboardIndex";
+import ChatroomLayout from "../pageComponents/dashboard/chatroom/ChatroomLayout";
+import Chatroom_Message from "../pageComponents/dashboard/chatroom/Chatroom_Message";
 import PrivateMessageLayout from "../pageComponents/dashboard/privateMessage/PrivateMessageLayout";
 import PrivateMessage from "../pageComponents/dashboard/privateMessage/privateMessage";
-import Signup from "../pageComponents/authentication/signup";
 import ProfileLayout from "../pageComponents/dashboard/profile/ProfileLayout";
+import Layout from "../pageComponents/global/Layout";
+import IndexHero from "../pageComponents/heroSection/indexHero";
 const routes: RouteObject[] = [
   {
     path: "/",

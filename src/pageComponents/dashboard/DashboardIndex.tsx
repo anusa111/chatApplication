@@ -1,7 +1,4 @@
-import React, { useLayoutEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { useContext, useEffect, useState } from "react";
-import { auth } from "../../config/firebase";
+import { useContext, useEffect } from "react";
 
 //images...
 import chat from "../../../public/logo/chat.png";
@@ -13,31 +10,29 @@ import { Theme } from "../../config/ThemeContext";
 //react icons..
 import { CiSettings, CiUser } from "react-icons/ci";
 import { FiSun } from "react-icons/fi";
-import { IoChatbubblesOutline } from "react-icons/io5";
+import { IoChatbubblesOutline, IoMoonOutline } from "react-icons/io5";
 import { PiUsersThree } from "react-icons/pi";
-import { IoMoonOutline } from "react-icons/io5";
 
 //antd imports
 import { Tooltip } from "antd";
 import { Outlet } from "react-router-dom";
-import Chatroom from "./chatroom/Chatroom";
 
 const DashboardIndex = () => {
-  const [user_email, set_user_email] = useState<any>();
-  const [username, set_username] = useState<any>();
+  // const [user_email, set_user_email] = useState<any>();
+  // const [username, set_username] = useState<any>();
 
   const { dark, handleTheme } = useContext(Theme);
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        set_user_email(auth.currentUser?.email);
-        set_username(auth.currentUser?.displayName);
-      } else {
-        window.location.href = "/";
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       set_user_email(auth.currentUser?.email);
+  //       set_username(auth.currentUser?.displayName);
+  //     } else {
+  //       window.location.href = "/";
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     const div = document.getElementById("dark");

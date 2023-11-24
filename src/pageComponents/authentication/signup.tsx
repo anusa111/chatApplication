@@ -1,40 +1,31 @@
 //react icons import
 import { AiOutlineMail, AiOutlineUser } from "react-icons/ai";
-import { CiImageOff } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CustomAntdButton from "../../antdComponents/CustomAntdButton";
 import Layout from "../global/Layout";
 
 //antd imports
-import { Form } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import type { UploadProps } from "antd";
-import { Button, message, Upload } from "antd";
+import { Button, Form, Upload } from "antd";
 
 //styled Components
 import { StyledInput } from "../../styledComponents/styledInput";
 
 //firebase auth imports
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../../config/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 //firebase storage imports
-import { image_db } from "../../config/firebase";
-import {
-  getDownloadURL,
-  list,
-  listAll,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
+import { image_db } from "../../config/firebase";
 
 //react notifications
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
 
 const Signup = () => {
   //react states...
@@ -184,7 +175,7 @@ const Signup = () => {
             <Upload
               showUploadList={false} // Hide the default Ant Design upload list
               onChange={handleImageUpload}
-              beforeUpload={(file, fileList) => {
+              beforeUpload={(file) => {
                 console.log(file);
                 setImg(file);
 
