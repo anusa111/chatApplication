@@ -87,10 +87,12 @@ const Signup = () => {
 
       const user = user_info.user;
 
-      await updateProfile(user, {
-        displayName: values.username,
-        photoURL: imgUrl,
-      });
+      if (imgUrl) {
+        await updateProfile(user, {
+          displayName: values.username,
+          photoURL: imgUrl,
+        });
+      }
 
       localStorage.setItem("auth-token", user_info.user.refreshToken);
 
