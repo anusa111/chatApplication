@@ -31,7 +31,7 @@ const Signup = () => {
   //react states...
   const [spin_loader, set_spin_loader] = useState(false);
   const [img, setImg] = useState<any>();
-  const [imgUrl, setImgUrl] = useState<any>([]);
+  // const [imgUrl, setImgUrl] = useState<any>();
 
   //method of clearing antd form data
   const [form] = Form.useForm();
@@ -62,6 +62,8 @@ const Signup = () => {
       ref: "password",
     },
   ];
+
+  let image_url: any;
   const signUp = async (values: any) => {
     try {
       const user_info = await createUserWithEmailAndPassword(
@@ -69,6 +71,15 @@ const Signup = () => {
         values.email,
         values.password
       );
+      const user = user_info.user;
+
+      {
+        image_url &&
+          (await updateProfile(user, {
+            displayName: values.username,
+            photoURL: image_url,
+          }));
+      }
 
       if (user_info) {
         toast.success("Registered Successfully", {
@@ -85,25 +96,13 @@ const Signup = () => {
 
       form.resetFields();
 
-      const user = user_info.user;
-
-      if (imgUrl) {
-        console.log(imgUrl);
-        await updateProfile(user, {
-          displayName: values.username,
-          photoURL: imgUrl,
-        });
-      } else {
-        console.log("url is not arrived");
-      }
-
       localStorage.setItem("auth-token", user_info.user.refreshToken);
 
       await addDoc(userCollectionRef, {
         email: values.email,
         username: values.username,
         createdAt: serverTimestamp(),
-        profile: imgUrl,
+        profile: image_url,
         user_id: auth.currentUser?.uid,
       });
 
@@ -130,20 +129,48 @@ const Signup = () => {
 
   //image upload
 
-  const handleImageUpload = () => {
+  // const handleImageUpload = () => {
+  //   if (img) {
+  //     console.log(img);
+  //     alert("Upload successfull");
+
+  //     const imgRef = ref(image_db, `uploads/${v4()}`);
+  //     uploadBytes(imgRef, img).then((value) => {
+  //       console.log(value);
+  //       getDownloadURL(value.ref).then((url) => {
+  //         console.log(url);
+  //         setImgUrl(url);
+  //         {
+  //           imgUrl ?? console.log("Hello", imgUrl);
+  //           console.log("aayena");
+  //         }
+  //       });
+  //     });
+  //   }
+  // };
+
+  const handleImageUpload = async () => {
     if (img) {
       console.log(img);
-      alert("Upload successfull");
+      alert("Upload successful");
 
       const imgRef = ref(image_db, `uploads/${v4()}`);
-      uploadBytes(imgRef, img).then((value) => {
+      try {
+        const value = await uploadBytes(imgRef, img);
         console.log(value);
-        getDownloadURL(value.ref).then((url) => {
-          console.log(url);
-          setImgUrl(url);
-          console.log("Hello", imgUrl);
-        });
-      });
+
+        const url = await getDownloadURL(value.ref);
+        console.log(url);
+
+        // Setting imgUrl and logging immediately
+        image_url = url;
+        console.log(image_url);
+        // setImgUrl(url);
+        // console.log("Hello", imgUrl);
+        // console.log("aayena");
+      } catch (error) {
+        console.error("Error during upload:", error);
+      }
     }
   };
 

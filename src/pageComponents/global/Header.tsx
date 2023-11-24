@@ -29,10 +29,6 @@ const Header = () => {
       menu: "Features",
       link: "/",
     },
-    {
-      menu: "Pricing",
-      link: "/",
-    },
 
     {
       menu: "Contact us",
