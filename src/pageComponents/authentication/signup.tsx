@@ -98,15 +98,18 @@ const Signup = () => {
 
       localStorage.setItem("auth-token", user_info.user.refreshToken);
 
-      await addDoc(userCollectionRef, {
-        email: values.email,
-        username: values.username,
-        createdAt: serverTimestamp(),
-        profile: image_url,
-        user_id: auth.currentUser?.uid,
-      });
+      {
+        image_url &&
+          (await addDoc(userCollectionRef, {
+            email: values.email,
+            username: values.username,
+            createdAt: serverTimestamp(),
+            profile: image_url,
+            user_id: auth.currentUser?.uid,
+          }));
 
-      window.location.href = "/dashboard";
+        window.location.href = "/dashboard";
+      }
     } catch (e) {
       console.log(e);
 
