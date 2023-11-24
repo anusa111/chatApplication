@@ -88,10 +88,13 @@ const Signup = () => {
       const user = user_info.user;
 
       if (imgUrl) {
+        console.log(imgUrl);
         await updateProfile(user, {
           displayName: values.username,
           photoURL: imgUrl,
         });
+      } else {
+        console.log("url is not arrived");
       }
 
       localStorage.setItem("auth-token", user_info.user.refreshToken);
@@ -108,7 +111,7 @@ const Signup = () => {
     } catch (e) {
       console.log(e);
 
-      toast.error("🦄Something went wrong", {
+      toast.error("Something went wrong", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -138,6 +141,7 @@ const Signup = () => {
         getDownloadURL(value.ref).then((url) => {
           console.log(url);
           setImgUrl(url);
+          console.log("Hello", imgUrl);
         });
       });
     }
