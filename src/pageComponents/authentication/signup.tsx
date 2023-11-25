@@ -188,6 +188,8 @@ const Signup = () => {
               setTimeout(() => {
                 if (imgUrl) {
                   signUp(values);
+                } else {
+                  signUp(values);
                 }
               }, 3000); // 3000 milliseconds = 3 seconds
             }}
