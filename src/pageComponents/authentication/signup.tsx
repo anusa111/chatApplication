@@ -167,8 +167,8 @@ const Signup = () => {
         uploadBytes(imgRef, img).then((value) => {
           console.log(value);
           getDownloadURL(value.ref).then((url) => {
-            console.log(url);
             setImgUrl(url);
+            console.log(url);
           });
         });
       }
@@ -187,7 +187,11 @@ const Signup = () => {
           <Form
             onFinish={(values) => {
               setTimeout(() => {
-                signUp(values);
+                if (imgUrl) {
+                  signUp(values);
+                } else {
+                  alert("Login Successfull");
+                }
               }, 3000); // 3000 milliseconds = 3 seconds
             }}
             onFinishFailed={onFinishFailed}
