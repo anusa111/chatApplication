@@ -26,7 +26,7 @@ const Header = () => {
     },
 
     {
-      menu: "Features",
+      menu: "Feature",
       link: "/",
     },
 
