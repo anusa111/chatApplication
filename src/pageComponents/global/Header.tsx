@@ -34,10 +34,6 @@ const Header = () => {
       menu: "Contact us",
       link: "/",
     },
-    {
-      menu: "Blog",
-      link: "/",
-    },
   ];
 
   return (
