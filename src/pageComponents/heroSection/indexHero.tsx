@@ -4,11 +4,11 @@ import GlobalButton from "../global/globalButton";
 import { BsArrowRight } from "react-icons/bs";
 
 //react images...
-import network from "../../../public/index/network.svg";
+import chatbot from "../../../public/index/chatbot.png";
 
 const IndexHero = () => {
   return (
-    <div className="lg:pt-[160px] pt-36 layout layout-padding  flex flex-col ">
+    <div className="lg:pt-[160px] pt-36 layout layout-padding  flex flex-col gap-20">
       <div className="flex flex-col items-center justify-center gap-8">
         <div className="lg:text-[40px] text-[25px] font-bold text-center">
           <span
@@ -52,8 +52,8 @@ const IndexHero = () => {
         </div>
       </div>
       <div className=" flex items-center justify-center ">
-        <div className="h-[60vh] w-[70vh]">
-          <img src={network} className="h-full w-full" />
+        <div className="h-[60vh] w-[70vh] object-contain">
+          <img src={chatbot} className="h-full w-full" />
         </div>
       </div>
     </div>

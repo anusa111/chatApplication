@@ -2,7 +2,7 @@
 import { AiOutlineMail, AiOutlineUser } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CustomAntdButton from "../../antdComponents/CustomAntdButton";
 import Layout from "../global/Layout";
 
@@ -31,7 +31,8 @@ const Signup = () => {
   //react states...
   const [spin_loader, set_spin_loader] = useState(false);
   const [img, setImg] = useState<any>();
-  // const [imgUrl, setImgUrl] = useState<any>();
+  const [imgUrl, setImgUrl] = useState<any>();
+  const [img_name, set_img_name] = useState<any>();
 
   //method of clearing antd form data
   const [form] = Form.useForm();
@@ -62,27 +63,75 @@ const Signup = () => {
       ref: "password",
     },
   ];
-
-  let image_url: any;
   const signUp = async (values: any) => {
-    try {
-      const user_info = await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      );
-      const user = user_info.user;
+    if (
+      imgUrl?.length > 0 &&
+      values.email &&
+      values.password &&
+      values.username
+    ) {
+      try {
+        const user_info = await createUserWithEmailAndPassword(
+          auth,
+          values.email,
+          values.password
+        );
+        form.resetFields();
 
-      {
-        image_url &&
-          (await updateProfile(user, {
-            displayName: values.username,
-            photoURL: image_url,
-          }));
-      }
+        const user = user_info.user;
 
-      if (user_info) {
-        toast.success("Registered Successfully", {
+        localStorage.setItem("auth-token", user_info.user.refreshToken);
+
+        const addUserData = async () => {
+          try {
+            await addDoc(userCollectionRef, {
+              email: values.email,
+              username: values.username,
+              createdAt: serverTimestamp(),
+              profile: imgUrl,
+              user_id: auth.currentUser?.uid,
+            });
+          } catch (e) {
+            alert(e);
+          }
+        };
+
+        if (imgUrl?.length > 0) {
+          console.log("starting to add user data");
+          addUserData();
+        }
+
+        const updateProfileitems = async () => {
+          try {
+            await updateProfile(user, {
+              displayName: values.username,
+              photoURL: imgUrl,
+            });
+
+            toast.success("Registered Successfully", {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+
+            window.location.href = "/dashboard";
+          } catch (error) {
+            console.log(error);
+          }
+        };
+
+        if (imgUrl?.length > 0) {
+          updateProfileitems();
+        }
+      } catch (e) {
+        console.log(e);
+
+        toast.error("Something went wrong", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -93,27 +142,8 @@ const Signup = () => {
           theme: "light",
         });
       }
-
-      form.resetFields();
-
-      localStorage.setItem("auth-token", user_info.user.refreshToken);
-
-      {
-        image_url &&
-          (await addDoc(userCollectionRef, {
-            email: values.email,
-            username: values.username,
-            createdAt: serverTimestamp(),
-            profile: image_url,
-            user_id: auth.currentUser?.uid,
-          }));
-
-        window.location.href = "/dashboard";
-      }
-    } catch (e) {
-      console.log(e);
-
-      toast.error("Something went wrong", {
+    } else {
+      toast.error("Please fill up all the field", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -130,52 +160,22 @@ const Signup = () => {
     console.log("Failed:", errorInfo);
   };
 
-  //image upload
-
-  // const handleImageUpload = () => {
-  //   if (img) {
-  //     console.log(img);
-  //     alert("Upload successfull");
-
-  //     const imgRef = ref(image_db, `uploads/${v4()}`);
-  //     uploadBytes(imgRef, img).then((value) => {
-  //       console.log(value);
-  //       getDownloadURL(value.ref).then((url) => {
-  //         console.log(url);
-  //         setImgUrl(url);
-  //         {
-  //           imgUrl ?? console.log("Hello", imgUrl);
-  //           console.log("aayena");
-  //         }
-  //       });
-  //     });
-  //   }
-  // };
-
-  const handleImageUpload = async () => {
-    if (img) {
-      console.log(img);
-      alert("Upload successful");
-
-      const imgRef = ref(image_db, `uploads/${v4()}`);
-      try {
-        const value = await uploadBytes(imgRef, img);
-        console.log(value);
-
-        const url = await getDownloadURL(value.ref);
-        console.log(url);
-
-        // Setting imgUrl and logging immediately
-        image_url = url;
-        console.log(image_url);
-        // setImgUrl(url);
-        // console.log("Hello", imgUrl);
-        // console.log("aayena");
-      } catch (error) {
-        console.error("Error during upload:", error);
+  useEffect(() => {
+    const handleImageUpload = () => {
+      if (img) {
+        const imgRef = ref(image_db, `uploads/${v4()}`);
+        uploadBytes(imgRef, img).then((value) => {
+          console.log(value);
+          getDownloadURL(value.ref).then((url) => {
+            console.log(url);
+            setImgUrl(url);
+          });
+        });
       }
-    }
-  };
+    };
+
+    handleImageUpload();
+  }, [img]);
 
   return (
     <Layout>
@@ -185,7 +185,11 @@ const Signup = () => {
             Sign Up
           </div>
           <Form
-            onFinish={signUp}
+            onFinish={(values) => {
+              setTimeout(() => {
+                signUp(values);
+              }, 3000); // 3000 milliseconds = 3 seconds
+            }}
             onFinishFailed={onFinishFailed}
             className="bg-[white] drop-shadow-md lg:p-12 p-8 lg:w-[60vh] w-[40vh]   flex flex-col gap-6 rounded-[8px]"
             form={form}
@@ -210,16 +214,20 @@ const Signup = () => {
             </div>
             <Upload
               showUploadList={false} // Hide the default Ant Design upload list
-              onChange={handleImageUpload}
-              beforeUpload={(file) => {
-                console.log(file);
+              // onChange={handleImageUpload}
+              beforeUpload={(file, fileList) => {
+                set_img_name(file.name);
+                console.log(fileList);
                 setImg(file);
 
                 return false;
               }}
+              className="flex  items-center gap-4"
             >
               <Button icon={<UploadOutlined />}>Select Image</Button>
+              <div>{img_name}</div>
             </Upload>
+
             <Form.Item>
               <CustomAntdButton
                 buttonStyle={{
@@ -235,22 +243,13 @@ const Signup = () => {
                   set_spin_loader(true);
                   setTimeout(() => {
                     set_spin_loader(false);
-                  }, 1000);
+                  }, 3000);
                 }}
               >
                 Sign Up
               </CustomAntdButton>
             </Form.Item>
           </Form>
-          {/* <div>
-            <input
-              type="file"
-              onChange={(e) => {
-                setImg(e.target?.files[0]);
-              }}
-            />
-            <button onClick={handleImageUpload}>Upload</button>
-          </div> */}
         </div>
       </div>
       <ToastContainer className="z-50" />

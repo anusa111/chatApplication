@@ -15,24 +15,20 @@ import { PiUsersThree } from "react-icons/pi";
 
 //antd imports
 import { Tooltip } from "antd";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 const DashboardIndex = () => {
-  // const [user_email, set_user_email] = useState<any>();
-  // const [username, set_username] = useState<any>();
-
   const { dark, handleTheme } = useContext(Theme);
 
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       set_user_email(auth.currentUser?.email);
-  //       set_username(auth.currentUser?.displayName);
-  //     } else {
-  //       window.location.href = "/";
-  //     }
-  //   });
-  // }, []);
+  const authToken = localStorage.getItem("auth-token");
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (authToken === null) {
+      localStorage.clear();
+      navigate("/");
+      console.log("Anusa");
+    }
+  }, [authToken]);
 
   useEffect(() => {
     const div = document.getElementById("dark");

@@ -130,6 +130,7 @@ const Message = () => {
           id: doc.id,
         });
       });
+      console.log(messageCollection);
       setMessageList(messageCollection);
     });
     return () => unsubscribe();

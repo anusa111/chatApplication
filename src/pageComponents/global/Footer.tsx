@@ -9,12 +9,12 @@ const Footer = () => {
         },
         {
           menu: "Features",
-          link: "/features",
+          link: "#",
         },
 
         {
           menu: "Contact Us",
-          link: "contact-us",
+          link: "#",
         },
       ],
     },
@@ -23,11 +23,11 @@ const Footer = () => {
       menu: [
         {
           menu: "Features",
-          link: "/features",
+          link: "#",
         },
         {
           menu: "Privacy Policy",
-          link: "/privacy-policy",
+          link: "#",
         },
       ],
     },
@@ -36,7 +36,7 @@ const Footer = () => {
       menu: [
         {
           menu: "LinkedIn",
-          link: "https://www.linkedin.com/company/chibihr/about/",
+          link: "#",
         },
         {
           menu: "Instagram",
@@ -44,7 +44,7 @@ const Footer = () => {
         },
         {
           menu: "Facebook",
-          link: "https://www.facebook.com/chibihrofficial",
+          link: "https://www.facebook.com/",
         },
       ],
     },
@@ -78,9 +78,9 @@ const Footer = () => {
                   Chat Chamber
                 </a>
                 <div className="text-[16px] text-[#596780]">
-                  Your One-Stop Solution for Effortless HR and Workforce
-                  Management, Providing an Exceptional Digital Experience on Web
-                  and Mobile.
+                  Join ChatChamber for a vibrant chat experience! Whether making
+                  friends, discussing passions, or sharing laughs, it's where
+                  conversations come alive!
                 </div>
               </div>
             </div>

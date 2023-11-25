@@ -9,7 +9,38 @@ import PrivateMessage from "../pageComponents/dashboard/privateMessage/privateMe
 import ProfileLayout from "../pageComponents/dashboard/profile/ProfileLayout";
 import Layout from "../pageComponents/global/Layout";
 import IndexHero from "../pageComponents/heroSection/indexHero";
+const privateRoute: RouteObject = {
+  path: "/dashboard",
+  element: <DashboardIndex />,
+  children: [
+    {
+      path: "chatroom",
+      element: <ChatroomLayout />,
+      children: [
+        {
+          path: ":room_name/:room_id",
+          element: <Chatroom_Message />,
+        },
+      ],
+    },
+    {
+      path: "startchat",
+      element: <PrivateMessageLayout />,
+      children: [
+        {
+          path: ":user_name/:user_id",
+          element: <PrivateMessage />,
+        },
+      ],
+    },
+    {
+      path: "profile",
+      element: <ProfileLayout />,
+    },
+  ],
+};
 const routes: RouteObject[] = [
+  privateRoute,
   {
     path: "/",
     element: (
@@ -31,36 +62,36 @@ const routes: RouteObject[] = [
     element: <Navigate to="chatroom" />,
   },
 
-  {
-    path: "/dashboard",
-    element: <DashboardIndex />,
-    children: [
-      {
-        path: "chatroom",
-        element: <ChatroomLayout />,
-        children: [
-          {
-            path: ":room_name/:room_id",
-            element: <Chatroom_Message />,
-          },
-        ],
-      },
-      {
-        path: "startchat",
-        element: <PrivateMessageLayout />,
-        children: [
-          {
-            path: ":user_name/:user_id",
-            element: <PrivateMessage />,
-          },
-        ],
-      },
-      {
-        path: "profile",
-        element: <ProfileLayout />,
-      },
-    ],
-  },
+  // {
+  //   path: "/dashboard",
+  //   element: <DashboardIndex />,
+  //   children: [
+  //     {
+  //       path: "chatroom",
+  //       element: <ChatroomLayout />,
+  //       children: [
+  //         {
+  //           path: ":room_name/:room_id",
+  //           element: <Chatroom_Message />,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: "startchat",
+  //       element: <PrivateMessageLayout />,
+  //       children: [
+  //         {
+  //           path: ":user_name/:user_id",
+  //           element: <PrivateMessage />,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: "profile",
+  //       element: <ProfileLayout />,
+  //     },
+  //   ],
+  // },
 ];
 
 export default routes;
