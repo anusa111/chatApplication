@@ -15,7 +15,7 @@ import { PiUsersThree } from "react-icons/pi";
 
 //antd imports
 import { Tooltip } from "antd";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const DashboardIndex = () => {
   const { dark, handleTheme } = useContext(Theme);
