@@ -97,7 +97,6 @@ const Signup = () => {
         };
 
         if (imgUrl?.length > 0) {
-          console.log("starting to add user data");
           addUserData();
         }
 
