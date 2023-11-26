@@ -2,6 +2,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth } from "../../../config/firebase";
 
+import avatar from "../../../assets/avatar.png";
+
 //react icons
 import { Collapse } from "antd";
 import { LuDot } from "react-icons/lu";
@@ -52,10 +54,18 @@ const ProfileInformation = () => {
     <div className=" flex flex-col gap-20 ">
       <div className="text-[25px] font-semibold">My Profile</div>
       <div className="flex flex-col items-center justify-center gap-6">
-        <img
-          src={image_url}
-          className="h-[80px] w-[80px] rounded-full object-cover"
-        />
+        {image_url ? (
+          <img
+            src={image_url}
+            className="h-[80px] w-[80px] rounded-full object-cover"
+          />
+        ) : (
+          <img
+            src={avatar}
+            className="h-[80px] w-[80px] rounded-full object-cover"
+          />
+        )}
+
         <div className="flex flex-col items-center">
           <div className="text-[16px] font-semibold">{user_name}</div>
           <div className="flex items-center translate-x-[-8px]">

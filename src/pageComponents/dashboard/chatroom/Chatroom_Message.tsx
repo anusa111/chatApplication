@@ -23,6 +23,8 @@ import { Form, Input } from "antd";
 //react notifications
 import { toast } from "react-toastify";
 
+import avatar from "../../../assets/avatar.png";
+
 //group videocall
 // import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
@@ -263,7 +265,7 @@ const Message = () => {
                     return (
                       <div key={index}>
                         <img
-                          src={userlist.profile}
+                          src={userlist.profile ? userList.profile : avatar}
                           alt="loading"
                           onError={(e) => {
                             console.error("Error loading image:", e);

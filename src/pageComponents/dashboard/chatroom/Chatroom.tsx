@@ -69,7 +69,7 @@ const Chatroom = () => {
         await updateDoc(docRef, {
           room_id: docRef.id,
         });
-        toast.success("🦄Chatroom Created Successfully", {
+        toast.success("Chatroom Created Successfully", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,

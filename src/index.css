@@ -42,6 +42,17 @@ body{
     
   }
 
-  .ant-collapse-item{
-    border-color: green;
+  @keyframes moveUpDown {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-25px);
+    }
   }
+  
+  .animated-element {
+  
+    animation: moveUpDown 4s linear infinite;
+  }
+  

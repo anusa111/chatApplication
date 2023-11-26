@@ -17,6 +17,8 @@ import { ToastContainer, toast } from "react-toastify";
 import CustomAntdButton from "../../../antdComponents/CustomAntdButton";
 import { auth, db } from "../../../config/firebase";
 
+import avatar from "../../../assets/avatar.png";
+
 const PrivateMessage = () => {
   const { user_name, user_id } = useParams();
   const [spin_loader, set_spin_loader] = useState(false);
@@ -249,7 +251,7 @@ const PrivateMessage = () => {
                     return (
                       <div key={index}>
                         <img
-                          src={userlist.profile}
+                          src={userlist.profile ? userList.profile : avatar}
                           alt="loading"
                           onError={(e) => {
                             console.error("Error loading image:", e);

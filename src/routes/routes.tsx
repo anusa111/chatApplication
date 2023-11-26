@@ -49,6 +49,7 @@ const routes: RouteObject[] = [
       </Layout>
     ),
   },
+
   {
     path: "/login",
     element: <Login />,
@@ -59,39 +60,8 @@ const routes: RouteObject[] = [
   },
   {
     path: "/dashboard",
-    element: <Navigate to="chatroom" />,
+    element: <Navigate to="profile" />,
   },
-
-  // {
-  //   path: "/dashboard",
-  //   element: <DashboardIndex />,
-  //   children: [
-  //     {
-  //       path: "chatroom",
-  //       element: <ChatroomLayout />,
-  //       children: [
-  //         {
-  //           path: ":room_name/:room_id",
-  //           element: <Chatroom_Message />,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: "startchat",
-  //       element: <PrivateMessageLayout />,
-  //       children: [
-  //         {
-  //           path: ":user_name/:user_id",
-  //           element: <PrivateMessage />,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: "profile",
-  //       element: <ProfileLayout />,
-  //     },
-  //   ],
-  // },
 ];
 
 export default routes;

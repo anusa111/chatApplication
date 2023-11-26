@@ -1,5 +1,8 @@
 import ProfileInformation from "./ProfileInformation";
 
+import start_chat from "../../../assets/start_chat.png";
+import GlobalButton from "../../global/globalButton";
+
 const ProfileLayout = () => {
   return (
     <div className="ml-[5%]">
@@ -9,11 +12,25 @@ const ProfileLayout = () => {
       <div className="ml-[21%]">
         <div
           style={{
-            minHeight: "150vh",
+            minHeight: "100dvh",
           }}
-          className="h-full  z-10 dark:text-white dark:bg-[#262E35] bg-white text-[#1e1e1e]"
+          className="h-full flex-col gap-20  flex items-center justify-center  z-10 dark:text-white dark:bg-[#262E35] bg-white text-[#1e1e1e]"
         >
-          Friends
+          <img
+            src={start_chat}
+            className="h-[40dvh] object-contain animated-element "
+          />
+          <GlobalButton
+            buttonStyle={{
+              color: "var(--black-color)",
+              borderRadius: "9px",
+              padding: "9px 18px",
+              backgroundColor: "var(--primary-color)",
+            }}
+            link="/dashboard/chatroom"
+          >
+            <div className="text-[15px] font-bold">Start Chat</div>
+          </GlobalButton>
         </div>
       </div>
     </div>

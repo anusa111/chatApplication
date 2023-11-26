@@ -33,7 +33,7 @@ const Signup = () => {
   const [img_name, set_img_name] = useState<any>();
   const [spin_loader, set_spin_loader] = useState(false);
 
-  let imageURL: any;
+  let imageURL: any = "";
 
   //method of clearing antd form data
   const [form] = Form.useForm();
@@ -47,6 +47,7 @@ const Signup = () => {
       placeholder: "Enter your Email",
       icons: <AiOutlineMail />,
       ref: "email",
+      msg: "Please provide your email",
     },
     {
       label: "Username",
@@ -54,6 +55,7 @@ const Signup = () => {
       placeholder: "Enter Username",
       icons: <AiOutlineUser />,
       ref: "username",
+      msg: "Please provide your username",
     },
     {
       label: "Password",
@@ -61,6 +63,7 @@ const Signup = () => {
       placeholder: "Enter Password",
       icons: <RiLockPasswordLine />,
       ref: "password",
+      msg: "Please provide your password",
     },
   ];
 
@@ -82,6 +85,20 @@ const Signup = () => {
     };
     console.log(postData);
     try {
+      if (values.password.length < 5) {
+        toast.error("Password length must be greater than 5", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return null;
+      }
+
       const user_info = await createUserWithEmailAndPassword(
         auth,
         values.email,
@@ -114,7 +131,7 @@ const Signup = () => {
           progress: undefined,
           theme: "light",
         });
-        window.location.href = "/dashboard";
+        window.location.href = "/dashboard/profile";
         set_spin_loader(false);
       } catch (error) {
         console.log(error);
@@ -134,19 +151,17 @@ const Signup = () => {
     }
   };
 
-  const handleImageUpload = async () => {
-    const imgRef = ref(image_db, `uploads/${v4()}`);
-
-    // Use async/await for asynchronous operations
-    try {
-      const value = await uploadBytes(imgRef, img);
-      console.log(value);
-
-      const url = await getDownloadURL(value.ref);
-      setImgUrl(url);
-      imageURL = url;
-    } catch (error) {
-      console.error("Error uploading image:", error);
+  const handleImageUpload = () => {
+    if (img) {
+      const imgRef = ref(image_db, `uploads/${v4()}`);
+      uploadBytes(imgRef, img).then((value) => {
+        console.log(value);
+        getDownloadURL(value.ref).then((url) => {
+          setImgUrl(url);
+          imageURL = url;
+          console.log(url);
+        });
+      });
     }
   };
   return (
@@ -167,7 +182,15 @@ const Signup = () => {
                   return (
                     <div key={index} className="flex flex-col gap-2">
                       <div>{data.label}</div>
-                      <Form.Item name={data.ref}>
+                      <Form.Item
+                        name={data.ref}
+                        rules={[
+                          {
+                            required: true,
+                            message: `${data.msg}`,
+                          },
+                        ]}
+                      >
                         <StyledInput
                           type={data.type}
                           placeholder=""
@@ -180,6 +203,7 @@ const Signup = () => {
                   );
                 })}
               </div>
+
               <Upload
                 showUploadList={false} // Hide the default Ant Design upload list
                 // onChange={handleImageUpload}
@@ -195,6 +219,7 @@ const Signup = () => {
                 <Button icon={<UploadOutlined />}>Select Image</Button>
                 <div>{img_name}</div>
               </Upload>
+
               <Form.Item>
                 <CustomAntdButton
                   buttonStyle={{
