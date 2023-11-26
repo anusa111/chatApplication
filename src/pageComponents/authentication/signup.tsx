@@ -28,18 +28,18 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
-  //react states...
-  const [spin_loader, set_spin_loader] = useState(false);
   const [img, setImg] = useState<any>();
   const [imgUrl, setImgUrl] = useState<any>();
   const [img_name, set_img_name] = useState<any>();
+  const [spin_loader, set_spin_loader] = useState(false);
+
+  let imageURL: any;
 
   //method of clearing antd form data
   const [form] = Form.useForm();
 
   //database reference
   const userCollectionRef = collection(db, "users");
-
   const inputField = [
     {
       label: "Email",
@@ -63,74 +63,48 @@ const Signup = () => {
       ref: "password",
     },
   ];
-  const signUp = async (values: any) => {
-    if (
-      imgUrl?.length > 0 &&
-      values.email &&
-      values.password &&
-      values.username
-    ) {
+
+  useEffect(() => {
+    handleImageUpload();
+  }, [img]);
+  const handleSubmit = async (values: any) => {
+    console.log(values);
+
+    // Wait for the image upload to complete
+    set_spin_loader(true);
+    await handleImageUpload();
+    console.log("state", imgUrl);
+    console.log("variable", imageURL);
+
+    const postData = {
+      ...values,
+      profile: imageURL,
+    };
+    console.log(postData);
+    try {
+      const user_info = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      const user = user_info.user;
+      localStorage.setItem("auth-token", user_info.user.refreshToken);
+
+      const response = await addDoc(userCollectionRef, {
+        email: postData.email,
+        username: postData.username,
+        createdAt: serverTimestamp(),
+        profile: imageURL,
+        user_id: auth.currentUser?.uid,
+      });
+      console.log(response);
+
       try {
-        const user_info = await createUserWithEmailAndPassword(
-          auth,
-          values.email,
-          values.password
-        );
-        form.resetFields();
-
-        const user = user_info.user;
-
-        localStorage.setItem("auth-token", user_info.user.refreshToken);
-
-        const addUserData = async () => {
-          try {
-            await addDoc(userCollectionRef, {
-              email: values.email,
-              username: values.username,
-              createdAt: serverTimestamp(),
-              profile: imgUrl,
-              user_id: auth.currentUser?.uid,
-            });
-          } catch (e) {
-            alert(e);
-          }
-        };
-
-        if (imgUrl?.length > 0) {
-          addUserData();
-        }
-
-        const updateProfileitems = async () => {
-          try {
-            await updateProfile(user, {
-              displayName: values.username,
-              photoURL: imgUrl,
-            });
-
-            toast.success("Registered Successfully", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-
-            window.location.href = "/dashboard";
-          } catch (error) {
-            console.log(error);
-          }
-        };
-
-        if (imgUrl?.length > 0) {
-          updateProfileitems();
-        }
-      } catch (e) {
-        console.log(e);
-
-        toast.error("Something went wrong", {
+        await updateProfile(user, {
+          displayName: values.username,
+          photoURL: imageURL,
+        });
+        toast.success("Registered Successfully", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -140,9 +114,14 @@ const Signup = () => {
           progress: undefined,
           theme: "light",
         });
+        window.location.href = "/dashboard";
+        set_spin_loader(false);
+      } catch (error) {
+        console.log(error);
       }
-    } else {
-      toast.error("Please fill up all the field", {
+    } catch (error: any) {
+      console.log(error);
+      toast.error("Something went wrong", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -155,108 +134,89 @@ const Signup = () => {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+  const handleImageUpload = async () => {
+    const imgRef = ref(image_db, `uploads/${v4()}`);
+
+    // Use async/await for asynchronous operations
+    try {
+      const value = await uploadBytes(imgRef, img);
+      console.log(value);
+
+      const url = await getDownloadURL(value.ref);
+      setImgUrl(url);
+      imageURL = url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   };
-
-  useEffect(() => {
-    const handleImageUpload = () => {
-      if (img) {
-        const imgRef = ref(image_db, `uploads/${v4()}`);
-        uploadBytes(imgRef, img).then((value) => {
-          console.log(value);
-          getDownloadURL(value.ref).then((url) => {
-            setImgUrl(url);
-            console.log(url);
-          });
-        });
-      }
-    };
-
-    handleImageUpload();
-  }, [img]);
-
   return (
-    <Layout>
-      <div className="flex flex-col items-center justify-center h-full gap-6 lg:pt-[180px] pt-36 component-padding">
-        <div className="flex flex-col gap-6">
-          <div className="text-[20px] lg:text-3xl font-semibold text-center">
-            Sign Up
-          </div>
-          <Form
-            onFinish={(values) => {
-              setTimeout(() => {
-                if (imgUrl) {
-                  signUp(values);
-                } else {
-                  signUp(values);
-                }
-              }, 3000); // 3000 milliseconds = 3 seconds
-            }}
-            onFinishFailed={onFinishFailed}
-            className="bg-[white] drop-shadow-md lg:p-12 p-8 lg:w-[60vh] w-[40vh]   flex flex-col gap-6 rounded-[8px]"
-            form={form}
-          >
-            <div className="flex flex-col gap-2">
-              {inputField.map((data, index) => {
-                return (
-                  <div key={index} className="flex flex-col gap-2">
-                    <div>{data.label}</div>
-                    <Form.Item name={data.ref}>
-                      <StyledInput
-                        type={data.type}
-                        placeholder=""
-                        addonBefore={data.icons}
-                        className=""
-                        size="large"
-                      />
-                    </Form.Item>
-                  </div>
-                );
-              })}
+    <>
+      <Layout>
+        <div className="flex flex-col items-center justify-center h-full gap-6 lg:pt-[180px] pt-36 component-padding">
+          <div className="flex flex-col gap-6">
+            <div className="text-[20px] lg:text-3xl font-semibold text-center">
+              Sign Up
             </div>
-            <Upload
-              showUploadList={false} // Hide the default Ant Design upload list
-              // onChange={handleImageUpload}
-              beforeUpload={(file, fileList) => {
-                set_img_name(file.name);
-                console.log(fileList);
-                setImg(file);
-
-                return false;
-              }}
-              className="flex  items-center gap-4"
+            <Form
+              onFinish={handleSubmit}
+              className="bg-[white] drop-shadow-md lg:p-12 p-8 lg:w-[60vh] w-[40vh]   flex flex-col gap-6 rounded-[8px]"
+              form={form}
             >
-              <Button icon={<UploadOutlined />}>Select Image</Button>
-              <div>{img_name}</div>
-            </Upload>
+              <div className="flex flex-col gap-2">
+                {inputField.map((data, index) => {
+                  return (
+                    <div key={index} className="flex flex-col gap-2">
+                      <div>{data.label}</div>
+                      <Form.Item name={data.ref}>
+                        <StyledInput
+                          type={data.type}
+                          placeholder=""
+                          addonBefore={data.icons}
+                          className=""
+                          size="large"
+                        />
+                      </Form.Item>
+                    </div>
+                  );
+                })}
+              </div>
+              <Upload
+                showUploadList={false} // Hide the default Ant Design upload list
+                // onChange={handleImageUpload}
+                beforeUpload={(file, fileList) => {
+                  set_img_name(file.name);
+                  console.log(fileList);
+                  setImg(file);
 
-            <Form.Item>
-              <CustomAntdButton
-                buttonStyle={{
-                  backgroundColor: "var(--primary-color)",
-                  color: "white",
-                  borderRadius: "9px",
-                  padding: "9px 18px",
-                  width: "100%",
-                  height: "6vh",
+                  return false;
                 }}
-                loading={spin_loader}
-                onClick={() => {
-                  set_spin_loader(true);
-                  setTimeout(() => {
-                    set_spin_loader(false);
-                  }, 3000);
-                }}
+                className="flex  items-center gap-4"
               >
-                Sign Up
-              </CustomAntdButton>
-            </Form.Item>
-          </Form>
+                <Button icon={<UploadOutlined />}>Select Image</Button>
+                <div>{img_name}</div>
+              </Upload>
+              <Form.Item>
+                <CustomAntdButton
+                  buttonStyle={{
+                    backgroundColor: "var(--primary-color)",
+                    color: "white",
+                    borderRadius: "9px",
+                    padding: "9px 18px",
+                    width: "100%",
+                    height: "6vh",
+                  }}
+                  loading={spin_loader}
+                  onClick={() => {}}
+                >
+                  Sign Up
+                </CustomAntdButton>
+              </Form.Item>
+            </Form>
+          </div>
         </div>
-      </div>
-      <ToastContainer className="z-50" />
-    </Layout>
+        <ToastContainer className="z-50" />
+      </Layout>
+    </>
   );
 };
 
