@@ -264,14 +264,26 @@ const Message = () => {
                   if (data.user_id == userlist.user_id) {
                     return (
                       <div key={index}>
-                        <img
-                          src={userlist.profile ? userList.profile : avatar}
-                          alt="loading"
-                          onError={(e) => {
-                            console.error("Error loading image:", e);
-                          }}
-                          className="  h-[40px] w-[40px] object-cover  rounded-full"
-                        />
+                        {userlist.profile ? (
+                          <img
+                            src={userlist.profile}
+                            alt="loading"
+                            onError={(e) => {
+                              console.error("Error loading image:", e);
+                            }}
+                            className="  h-[40px] w-[40px] object-cover  rounded-full"
+                          />
+                        ) : (
+                          <img
+                            src={avatar}
+                            alt="loading"
+                            onError={(e) => {
+                              console.error("Error loading image:", e);
+                            }}
+                            className="  h-[40px] w-[40px] object-cover  rounded-full"
+                          />
+                        )}
+
                         {chatroomList.map((data: any, index: any) => {
                           if (
                             data.creator_id === userlist.user_id &&
