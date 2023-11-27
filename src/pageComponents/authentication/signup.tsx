@@ -216,7 +216,9 @@ const Signup = () => {
                 }}
                 className="flex  items-center gap-4"
               >
-                <Button icon={<UploadOutlined />}>Select Image</Button>
+                <Button icon={<UploadOutlined />}>
+                  Select your profile picture
+                </Button>
                 <div>{img_name}</div>
               </Upload>
 

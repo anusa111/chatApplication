@@ -21,6 +21,7 @@ const Chatroom = () => {
   const [spin_loader, set_spin_loader] = useState(false);
   const [username, set_username] = useState<any>();
   const [chatroomList, setChatroomList] = useState<any>();
+  const chatroom_id_collection: any = [];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const chatroomCollectionRef = collection(db, "chatroom");
 
@@ -48,6 +49,11 @@ const Chatroom = () => {
         id: doc.id,
       }));
       setChatroomList(filteredData);
+      chatroom_id_collection.push(
+        filteredData.map((data: any) => {
+          return data.id;
+        })
+      );
     } catch (e) {
       console.log(e);
     }
@@ -112,6 +118,7 @@ const Chatroom = () => {
     <div className="relative h-full">
       <div className="flex flex-col gap-6">
         <div className="text-[25px] font-semibold">Chatroom</div>
+
         <div className="flex items-center gap-2 dark:bg-[#36404A] bg-[#E6EBF5] px-4 py-2 dark:text-[#8DB0CF] text-[#1e1e1e]">
           <div>
             <CiSearch size={20} />

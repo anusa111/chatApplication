@@ -10,9 +10,9 @@ const ChatroomLayout = () => {
       <div className="ml-[21%]">
         <div
           style={{
-            minHeight: "150vh",
+            minHeight: "500dvh",
           }}
-          className=" z-10 dark:text-white dark:bg-[#262E35] bg-white text-[#1e1e1e] h-[500vh]"
+          className=" z-10 dark:text-white dark:bg-[#262E35] bg-white text-[#1e1e1e] h-[500dvh] "
         >
           <Outlet />
         </div>

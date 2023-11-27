@@ -9,12 +9,12 @@ const Footer = () => {
         },
         {
           menu: "Features",
-          link: "#",
+          link: "/",
         },
 
         {
           menu: "Contact Us",
-          link: "#",
+          link: "/",
         },
       ],
     },
@@ -25,10 +25,6 @@ const Footer = () => {
           menu: "Features",
           link: "#",
         },
-        {
-          menu: "Privacy Policy",
-          link: "#",
-        },
       ],
     },
     {
@@ -36,7 +32,7 @@ const Footer = () => {
       menu: [
         {
           menu: "LinkedIn",
-          link: "#",
+          link: "https://www.linkedin.com/",
         },
         {
           menu: "Instagram",
@@ -50,16 +46,16 @@ const Footer = () => {
     },
   ];
 
-  const footer = [
-    {
-      menu: "Privacy Policy",
-      link: "/privacy-policy",
-    },
-    {
-      menu: "Terms of Service",
-      link: "/terms-of-service",
-    },
-  ];
+  // const footer = [
+  //   {
+  //     menu: "Privacy Policy",
+  //     link: "/privacy-policy",
+  //   },
+  //   {
+  //     menu: "Terms of Service",
+  //     link: "/terms-of-service",
+  //   },
+  // ];
 
   return (
     <div className="bg-[#f4f4f4]">
@@ -108,8 +104,8 @@ const Footer = () => {
             </div>
           </div>
           <div className="border-t-[1px] border-[#b2b2f0] pt-[20px] text-[16px]">
-            <div className="flex lg:flex-row flex-col justify-between lg:items-center gap-[20px]">
-              <div className="flex lg:flex-row flex-col lg:gap-[32px] gap-[16px]">
+            <div className="flex lg:flex-row flex-col justify-center lg:items-center gap-[20px]">
+              {/* <div className="flex lg:flex-row flex-col lg:gap-[32px] gap-[16px]">
                 {footer.map((data, index) => {
                   return (
                     <div key={index} className="">
@@ -117,7 +113,7 @@ const Footer = () => {
                     </div>
                   );
                 })}
-              </div>
+              </div> */}
               <div className="">© Chat Chamber, 2023</div>
             </div>
           </div>

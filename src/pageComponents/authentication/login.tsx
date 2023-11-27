@@ -65,7 +65,7 @@ const Login = () => {
       });
       form.resetFields();
       localStorage.setItem("auth-token", user_info.user.refreshToken);
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard/profile";
     } catch (e) {
       console.log(e);
       toast.error("Login Failed", {

@@ -15,7 +15,6 @@ import { auth, db } from "../../../config/firebase";
 
 //react icons
 import { IoSend } from "react-icons/io5";
-import { FaPhoneAlt } from "react-icons/fa";
 
 //antd imports
 import { Form, Input } from "antd";
@@ -41,7 +40,7 @@ const Message = () => {
 
   const [chatroomMember, setChatroomMember] = useState<any>();
 
-  const [start_call, set_start_call] = useState<any>(false);
+  // const [start_call, set_start_call] = useState<any>(false);
 
   //firebase/database
   const msgCollectionRef = collection(db, "chatroomMessage");
@@ -135,6 +134,7 @@ const Message = () => {
       console.log(messageCollection);
       setMessageList(messageCollection);
     });
+    // myMetting("");
     return () => unsubscribe();
   }, [room_id]);
 
@@ -181,7 +181,7 @@ const Message = () => {
   };
 
   //video calls
-  // const myMetting = async (element) => {
+  // const myMetting = async (element: any) => {
   //   console.log(room_name);
   //   const appID = 751325053;
   //   const serverSecret = "f0d7ebdc764a40ebbe5d10e2c54df90e";
@@ -196,7 +196,7 @@ const Message = () => {
   //   zegocloud.joinRoom({
   //     container: element,
   //     scenario: {
-  //       mode: ZegoUIKitPrebuilt.GroupCalls,
+  //       mode: ZegoUIKitPrebuilt.GroupCall,
   //     },
   //     showScreenSharingButton: true,
   //   });
@@ -226,19 +226,23 @@ const Message = () => {
                           {data.creator.charAt(0).toUpperCase() +
                             data.creator.slice(1)}
                         </div>
-                        <div
-                          onClick={() => {
-                            set_start_call(!start_call);
-                          }}
-                        >
-                          <FaPhoneAlt
-                            style={{
-                              color: "var(--primary-color)",
-                            }}
-                            size={20}
-                            className="hover:cursor-pointer"
-                          />
-                        </div>
+                        {/* <div>
+                          <div
+                            // onClick={() => {
+                            //   myMetting(
+                            //     document.getElementById("start_meeting")
+                            //   );
+                            // }}
+                          >
+                            <FaPhoneAlt
+                              style={{
+                                color: "var(--primary-color)",
+                              }}
+                              size={20}
+                              className="hover:cursor-pointer"
+                            />
+                          </div>
+                        </div> */}
                       </div>
                     )}
                   </div>
@@ -250,6 +254,9 @@ const Message = () => {
       </div>
 
       <div className="my-[4rem] px-20 py-10 h-[100vh]">
+        <div className="flex items-center justify-center ">
+          <div id="start_meeting"></div>
+        </div>
         {messageList.map((data: any, index: any) => {
           return (
             <div key={index} className=" relative">
@@ -320,7 +327,6 @@ const Message = () => {
           );
         })}
       </div>
-      {/* {start_call && <div ref={myMetting} />} */}
 
       <div className="fixed bottom-0  border-t-[1px] z-50 dark:border-[#2E373F]  flex items-center   w-full dark:bg-[#262E35] py-2 px-6 dark:text-white bg-white text-[#1e1e1e]">
         <Form
