@@ -197,6 +197,7 @@ const Signup = () => {
                           addonBefore={data.icons}
                           className=""
                           size="large"
+                          autoComplete="off"
                         />
                       </Form.Item>
                     </div>

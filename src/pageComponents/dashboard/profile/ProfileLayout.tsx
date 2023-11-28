@@ -22,14 +22,13 @@ const ProfileLayout = () => {
           />
           <GlobalButton
             buttonStyle={{
-              color: "var(--black-color)",
               borderRadius: "9px",
               padding: "9px 18px",
               backgroundColor: "var(--primary-color)",
             }}
             link="/dashboard/chatroom"
           >
-            <div className="text-[15px] font-bold">Start Chat</div>
+            <div className="text-[15px] font-bold text-white ">Start Chat</div>
           </GlobalButton>
         </div>
       </div>

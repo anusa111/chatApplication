@@ -303,6 +303,7 @@ const PrivateMessage = () => {
               placeholder=""
               className="dark:bg-[#36404A] bg-[#E6EBF5] dark:text-white  rounded-[4px]  focus:outline-none w-[140vh]"
               size="large"
+              autoComplete="off"
             />
           </Form.Item>
 
